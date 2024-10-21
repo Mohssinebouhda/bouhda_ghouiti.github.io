@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ma premiere carte</title>
+
+
+  <link rel="stylesheet" href="leaflet.css" />
+  <script src="leaflet.js"></script>
+  <link rel="alternate" type="application/geo+json" href="quartier.geojson" title="GeoJSON Data" />
+</head>
+<body>
+
+  <div id="map" style="height: 500px;"></div>
+
+  <script>
+    // Initialiser la carte centrée sur Rabat
+    var map = L.map('map').setView([34.020882, -6.841650], 13);
+
+    // Utiliser les tuiles d'OpenStreetMap pour afficher la carte
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Ajouter un marqueur sur Rabat
+    var marker = L.marker([34.020882, -6.841650]).addTo(map);
+
+    // Ajouter un popup pour le marqueur
+    marker.bindPopup("<b>Rabat</b><br>Capitale du Maroc.").openPopup();
+    var polygon = L.polygon([
+      [34.025883, -6.847650],
+      [34.015883, -6.837650],
+      [34.022883, -6.825650]
+    ]).addTo(map);
+
+    polygon.bindPopup("<b>oui </b><br>Capitale du Maroc.").openPopup();
+     L.geoJSON(quartier, {
+        // Ajouter un popup pour chaque feature du GeoJSON
+        onEachFeature: function (feature, layer) {
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent);
+            }
+        }
+    }).addTo(map);
+  </script>
+</body>
+</html>
